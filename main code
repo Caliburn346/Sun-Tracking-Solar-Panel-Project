@@ -1,0 +1,152 @@
+#include <Servo.h>
+Servo top_servo;
+Servo bot_servo;
+
+int leftTopLDR = A0;
+int leftBotLDR = A1;
+int rightTopLDR = A2;
+int rightBotLDR = A3;
+int solarVoltagePin = A4;
+int leftTopReading = 0;
+int leftBotReading = 0;
+int rightTopReading = 0;
+int rightBotReading = 0;
+
+float converted = 0;
+int top_rotation = 90;
+int bot_rotation = 90;
+int resistance = 5000;
+
+
+
+void setup() {
+
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  top_servo.attach(9);
+  top_servo.write(top_rotation);
+
+  bot_servo.attach(10);
+  bot_servo.write(bot_rotation);
+
+  pinMode(leftTopLDR, INPUT);
+  pinMode(leftBotLDR, INPUT);
+  pinMode(rightBotLDR, INPUT);
+  pinMode(rightTopLDR, INPUT);
+  pinMode(solarVoltagePin, INPUT);
+  
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  int leftTopReading = analogRead(leftTopLDR);
+  int leftBotReading = analogRead(leftBotLDR);;
+  int rightTopReading = analogRead(rightTopLDR);
+  int rightBotReading = analogRead(rightBotLDR);
+  float solarVoltage = analogRead(solarVoltagePin);
+  
+
+ 
+
+
+    if (leftTopReading > leftBotReading){
+      
+      if(top_rotation >= 0 || top_rotation <= 180){
+        top_rotation = top_rotation + 1;
+      top_servo.write(top_rotation);
+      }
+      
+     
+    }
+    else if (leftTopReading < leftBotReading){
+      
+      if(top_rotation >= 0 || top_rotation <= 180){
+        top_rotation = top_rotation - 1;
+      top_servo.write(top_rotation);
+      }
+      
+      
+    }
+
+    if (rightTopReading > rightBotReading){
+    
+      if(top_rotation >= 0 || top_rotation <= 180){
+        top_rotation = top_rotation + 1;
+      top_servo.write(top_rotation);
+      }
+      
+    }
+    else if (rightTopReading < rightBotReading){
+     
+      if(top_rotation >= 0 || top_rotation <= 180){
+        top_rotation = top_rotation - 1;
+      top_servo.write(top_rotation);
+      }
+     
+      
+    }
+    
+    
+    if (leftTopReading > rightTopReading){
+
+      if(bot_rotation >= 0 || bot_rotation <= 180){
+        bot_rotation = bot_rotation - 1;
+      bot_servo.write(bot_rotation);
+      }
+      
+    }
+    else if (leftTopReading < rightTopReading){
+     
+      if(bot_rotation >= 0 || bot_rotation <= 180){
+        bot_rotation = bot_rotation + 1;
+      bot_servo.write(bot_rotation);
+      }
+      
+    }
+
+
+
+    if (leftBotReading > rightBotReading){
+     
+      if(bot_rotation >= 0 || bot_rotation <= 180){
+        bot_rotation = bot_rotation - 1;
+      bot_servo.write(bot_rotation);
+      }
+      
+    }
+    else if (leftBotReading < rightBotReading){
+     
+      if(bot_rotation >= 0 || bot_rotation <= 180){
+        bot_rotation = bot_rotation + 1;
+      bot_servo.write(bot_rotation);
+      }
+      
+     
+    }
+    
+
+  /*Serial.print("Top rotation: ");
+  Serial.print(top_rotation);
+  Serial.println();
+  Serial.print("Bot rotation: ");
+  Serial.print(bot_rotation);
+  Serial.println();
+  Serial.println();
+
+   Serial.print("Solar Voltage (V): ");
+  Serial.print(solarVoltage * 5/1023);
+  Serial.println();
+  Serial.print("Current (mA): ");
+  Serial.print((pow(10,3) * solarVoltage * 5/1023)/resistance);
+  Serial.println();
+  */
+  Serial.print(millis());
+  Serial.print(",");
+  Serial.println(solarVoltage * 5/1023);
+  
+  delay(500);
+
+  
+
+}
